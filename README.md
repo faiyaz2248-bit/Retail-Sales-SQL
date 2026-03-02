@@ -47,38 +47,57 @@ The project provides solutions to specific business questions through SQL querie
 4.  **Run Analysis:** Execute the provided SQL queries in `Retail Sales.sql` to generate reports and insights.
 
 
--- Q.1 Write a SQL query to retrieve all columns for sales made on '2022-11-05'
-SELECT * FROM rts WHERE sale_date = '2022-11-05';
+##Q.1 Write a SQL query to retrieve all columns for sales made on '2022-11-05'## 
+```
+ SELECT * FROM rts 
+WHERE sale_date = '2022-11-05';
+```
 
 
--- Q.2 Write a SQL query to retrieve all transactions where the category is 'Clothing' 
--- and the quantity sold is more than 4 in the month of Nov-2022 
+## Q.2 Write a SQL query to retrieve all transactions where the category is 'Clothing' 
+-- and the quantity sold is more than 4 in the month of Nov-2022##
+```
 SELECT * FROM rts 
 WHERE category = 'clothing' 
 AND sale_date BETWEEN '2022-11-01' AND '2022-11-30' 
 AND quantiy >= 4;
-
+```
 
 -- Q.3 Write a SQL query to calculate the total sales (total_sale) for each category.
-SELECT category, SUM(total_sale) AS Total_Sales 
-FROM rts GROUP BY category;
-
+```
+SELECT 
+    category, 
+    SUM(total_sale) AS Total_Sales 
+FROM rts 
+GROUP BY category;
+```
 
 -- Q.4 Write a SQL query to find the average age of customers who purchased items from the 'Beauty' category.
-SELECT category, AVG(age) FROM rts 
-WHERE category = 'Beauty' GROUP BY category;
-
+```
+SELECT 
+    category, 
+    AVG(age) AS avg_age
+FROM rts 
+WHERE category = 'Beauty' 
+GROUP BY category;
+```
 
 -- Q.5 Write a SQL query to find all transactions where the total_sale is greater than 1000.
-SELECT * FROM rts WHERE total_sale > 1000;
-
+```
+SELECT * FROM rts 
+WHERE total_sale > 1000;
+```
 
 -- Q.6 Write a SQL query to find the total number of transactions (transaction_id) made by each gender in each category.
+```
 SELECT gender, category, COUNT(transactions_id) 
-FROM rts GROUP BY gender, category ORDER BY 2;
-
+FROM rts 
+GROUP BY gender, category 
+ORDER BY 2;
+```
 
 -- Q.7 Write a SQL query to calculate the average sale for each month. Find out best selling month in each year
+```
 SELECT * FROM (
     SELECT 
       year(sale_date) as year, 
@@ -87,20 +106,24 @@ SELECT * FROM (
       Rank() OVER(PARTITION BY year(sale_date) ORDER BY avg(total_sale) DESC) as ranking
     FROM rts GROUP BY 1,2
 ) AS T1 WHERE ranking = 1;
-
+```
 
 -- Q.8 Write a SQL query to find the top 5 customers based on the highest total sales
+```
 SELECT customer_id, SUM(total_sale) 
 FROM rts GROUP BY customer_id 
 ORDER BY SUM(total_sale) DESC LIMIT 5;
-
+```
 
 -- Q.9 Write a SQL query to find the number of unique customers who purchased items from each category.
+```
 SELECT category, COUNT(DISTINCT customer_id) 
-FROM rts GROUP BY category;
-
+FROM rts 
+GROUP BY category;
+```
 
 -- Q.10 Write a SQL query to create each shift and number of orders (Example Morning <=12, Afternoon Between 12 & 17, Evening >17)
+```
 SELECT shift, COUNT(transactions_id) FROM (
     SELECT *,
     CASE
@@ -110,3 +133,4 @@ SELECT shift, COUNT(transactions_id) FROM (
     END AS shift
     FROM rts
 ) AS T2 GROUP BY shift;
+```
